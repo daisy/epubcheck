@@ -79,6 +79,11 @@ public abstract class AbstractEpubCheckTest
   {
     testValidateDocument(fileName, null, profile, verbose);
   }
+  
+  public void testValidateDocument(String fileName, OptionSet options, boolean verbose)
+  {
+    testValidateDocument(fileName, null, null, options, verbose);
+  }
 
   public void testValidateDocument(String fileName, String resultFile)
   {
@@ -93,6 +98,12 @@ public abstract class AbstractEpubCheckTest
   public void testValidateDocument(String fileName, String resultFile, EPUBProfile profile,
       boolean verbose)
   {
+    testValidateDocument(fileName, resultFile, profile, null, verbose);
+  }
+
+  public void testValidateDocument(String fileName, String resultFile, EPUBProfile profile,
+      OptionSet options, boolean verbose)
+  {
     EPUBProfile validationProfile = profile == null ? EPUBProfile.DEFAULT : profile;
     DocumentValidator epubCheck;
     ValidationReport testReport;
@@ -103,7 +114,7 @@ public abstract class AbstractEpubCheckTest
       {
         testReport = new ValidationReport(fileName);
         epubCheck = new EpubCheck(resourceProvider.getInputStream(null), testReport, fileName,
-            validationProfile);
+            validationProfile, options);
       } catch (IOException e)
       {
         throw new RuntimeException(e);
@@ -126,12 +137,13 @@ public abstract class AbstractEpubCheckTest
         Archive epub = new Archive(testFile.getPath());
         testReport = new ValidationReport(epub.getEpubName());
         epub.createArchive();
-        epubCheck = new EpubCheck(epub.getEpubFile(), testReport, validationProfile);
+        epubCheck = new EpubCheck(epub.getEpubFile(), testReport, validationProfile, options);
       }
       else
       {
         testReport = new ValidationReport(fileName);
-        epubCheck = new EpubCheck(new File(testFile.getPath()), testReport, validationProfile);
+        epubCheck = new EpubCheck(new File(testFile.getPath()), testReport, validationProfile,
+            options);
       }
     }
 

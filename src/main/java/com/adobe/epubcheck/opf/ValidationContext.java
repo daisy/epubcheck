@@ -6,6 +6,8 @@ import java.util.Set;
 
 import com.adobe.epubcheck.api.EPUBProfile;
 import com.adobe.epubcheck.api.FeatureReport;
+import com.adobe.epubcheck.api.OptionSet;
+import com.adobe.epubcheck.api.OptionSet.OptionSetBuilder;
 import com.adobe.epubcheck.api.Report;
 import com.adobe.epubcheck.ocf.OCFPackage;
 import com.adobe.epubcheck.util.EPUBVersion;
@@ -74,11 +76,15 @@ public final class ValidationContext
    * The set of properties associated to the resource being validated.
    */
   public final Set<Property> properties;
+  /**
+   * The options set for the validation. Guaranteed non-null, can be empty.
+   */
+  public final OptionSet options;
 
   private ValidationContext(String path, String mimeType, EPUBVersion version, EPUBProfile profile,
       Report report, FeatureReport featureReport, GenericResourceProvider resourceProvider,
       Optional<OCFPackage> ocf, Optional<XRefChecker> xrefChecker, Set<String> pubTypes,
-      Set<Property> properties)
+      Set<Property> properties, OptionSet options)
   {
     super();
     this.path = path;
@@ -92,6 +98,7 @@ public final class ValidationContext
     this.xrefChecker = xrefChecker;
     this.pubTypes = pubTypes;
     this.properties = properties;
+    this.options = options;
   }
 
   /**
@@ -113,6 +120,7 @@ public final class ValidationContext
     private XRefChecker xrefChecker = null;
     private Set<String> pubTypes = null;
     private ImmutableSet.Builder<Property> properties = ImmutableSet.<Property> builder();
+    private OptionSet options = null;
 
     public ValidationContextBuilder()
     {
@@ -136,6 +144,7 @@ public final class ValidationContext
       xrefChecker = context.xrefChecker.orNull();
       pubTypes = context.pubTypes;
       properties = ImmutableSet.<Property> builder().addAll(context.properties);
+      options = context.options;
       return this;
     }
 
@@ -215,17 +224,27 @@ public final class ValidationContext
       return this;
     }
 
+    public ValidationContextBuilder options(OptionSet options)
+    {
+      if (options != null)
+      {
+        this.options = options;
+      }
+      return this;
+    }
+
     public ValidationContext build()
     {
       resourceProvider = (resourceProvider == null && ocf != null) ? ocf : resourceProvider;
       checkNotNull(resourceProvider);
       checkNotNull(report);
       return new ValidationContext(Strings.nullToEmpty(path), Strings.nullToEmpty(mimeType),
-          version != null ? version : EPUBVersion.Unknown, profile != null ? profile
-              : EPUBProfile.DEFAULT, report, featureReport != null ? featureReport
-              : new FeatureReport(), resourceProvider, Optional.fromNullable(ocf),
-          Optional.fromNullable(xrefChecker), pubTypes != null ? ImmutableSet.copyOf(pubTypes)
-              : ImmutableSet.<String> of(), properties.build());
+          version != null ? version : EPUBVersion.Unknown,
+          profile != null ? profile : EPUBProfile.DEFAULT, report,
+          featureReport != null ? featureReport : new FeatureReport(), resourceProvider,
+          Optional.fromNullable(ocf), Optional.fromNullable(xrefChecker),
+          pubTypes != null ? ImmutableSet.copyOf(pubTypes) : ImmutableSet.<String> of(),
+          properties.build(), options != null ? options : new OptionSetBuilder().build());
     }
   }
 

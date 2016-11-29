@@ -53,6 +53,7 @@ public class EpubCheck implements DocumentValidator
   final private File epubFile;
   final private EPUBProfile profile;
   final private Report report;
+  final private OptionSet options;
 
   public static String version()
   {
@@ -124,17 +125,36 @@ public class EpubCheck implements DocumentValidator
    */
   public EpubCheck(File epubFile, Report report, EPUBProfile profile)
   {
+    this(epubFile,report,profile, null);
+  }
+
+
+  /**
+   * Create an epub validator to validate the given file and report issues to a
+   * given Report object. Can validate a specific EPUB profile (e.g. EDUPUB,
+   * DICT, IDX, etc). A set of runtime Options can also be specified.
+   * 
+   */
+  public EpubCheck(File epubFile, Report report, EPUBProfile profile, OptionSet options)
+  {
     this.epubFile = epubFile;
     this.report = report;
     this.profile = profile == null ? EPUBProfile.DEFAULT : profile;
+    this.options = options;
   }
 
+  
   public EpubCheck(InputStream inputStream, Report report, String uri)
   {
     this(inputStream, report, uri, EPUBProfile.DEFAULT);
   }
-
+  
   public EpubCheck(InputStream inputStream, Report report, String uri, EPUBProfile profile)
+  {
+    this(inputStream, report, uri, profile, null);
+  }
+
+  public EpubCheck(InputStream inputStream, Report report, String uri, EPUBProfile profile, OptionSet options)
   {
     File epubFile;
     OutputStream out = null;
@@ -153,6 +173,7 @@ public class EpubCheck implements DocumentValidator
 
       this.epubFile = epubFile;
       this.profile = profile == null ? EPUBProfile.DEFAULT : profile;
+      this.options = options;
       this.report = report;
     } catch (IOException e)
     {
@@ -211,7 +232,7 @@ public class EpubCheck implements DocumentValidator
 
       OCFPackage ocf = new OCFZipPackage(zip);
       OCFChecker checker = new OCFChecker(new ValidationContextBuilder().ocf(ocf).report(report)
-          .profile(profile).build());
+          .profile(profile).options(options).build());
       checker.runChecks();
 
       /*** Here are called custom checks (CTC Package) **/

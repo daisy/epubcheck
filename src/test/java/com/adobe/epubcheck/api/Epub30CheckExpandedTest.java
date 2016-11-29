@@ -36,6 +36,15 @@ public class Epub30CheckExpandedTest extends AbstractEpubCheckTest
     super("/30/expanded/");
   }
 
+	// @Test
+	// public void testA11yReport()
+	// {
+	// testValidateDocument("valid/a11y-report", new OptionSetBuilder()
+	// .add(Option.Key.ACCESSIBILITY, new
+	// File("/tmp/a11y-report.html")).build(),
+	// true);
+	// }
+
   @Test
   public void testValidateEPUBPLoremBasic()
   {
@@ -478,7 +487,6 @@ public class Epub30CheckExpandedTest extends AbstractEpubCheckTest
   {
     testValidateDocument("invalid/custom-ns-attr/");
   }
-  
 
   @Test
   public void testPageList()
@@ -590,20 +598,23 @@ public class Epub30CheckExpandedTest extends AbstractEpubCheckTest
   {
     testValidateDocument("valid/issue567/");
   }
-  
+
   @Test
-  public void testIssue615_langtag() {
+  public void testIssue615_langtag()
+  {
     testValidateDocument("valid/issue615-langtags/");
   }
-  
+
   @Test
-  public void testResource_Missing() {
+  public void testResource_Missing()
+  {
     Collections.addAll(expectedErrors, MessageId.RSC_001);
     testValidateDocument("invalid/resource-missing/");
   }
-  
+
   @Test
-  public void testResource_RefInXHTML_Undeclared() {
+  public void testResource_RefInXHTML_Undeclared()
+  {
     Collections.addAll(expectedErrors, MessageId.RSC_007);
     testValidateDocument("invalid/resource-missing-refinxhtml/");
   }
@@ -626,35 +637,41 @@ public class Epub30CheckExpandedTest extends AbstractEpubCheckTest
     Collections.addAll(expectedErrors, MessageId.CSS_010);
     testValidateDocument("invalid/xpgt-no-fallback/");
   }
-  
+
   @Test
-  public void testFont_OpenType() {
+  public void testFont_OpenType()
+  {
     testValidateDocument("valid/font-opentype");
   }
-  
+
   @Test
-  public void testFont_NonCoreMediaType() {
+  public void testFont_NonCoreMediaType()
+  {
     testValidateDocument("valid/font-othermediatype");
   }
-  
+
   @Test
-  public void testFXL_WithSVG() {
+  public void testFXL_WithSVG()
+  {
     testValidateDocument("valid/fxl-svg/");
   }
-  
+
   @Test
-  public void testFXL_WithSVG_NoViewbox() {
+  public void testFXL_WithSVG_NoViewbox()
+  {
     expectedErrors.add(MessageId.HTM_048);
     testValidateDocument("invalid/fxl-svg-noviewbox/");
   }
-  
+
   @Test
-  public void testFXL_WithSVGNotInSpine() {
+  public void testFXL_WithSVGNotInSpine()
+  {
     testValidateDocument("valid/fxl-svg-notinspine/");
   }
-  
+
   @Test
-  public void testLink_MissingResource(){
+  public void testLink_MissingResource()
+  {
     Collections.addAll(expectedWarnings, MessageId.RSC_007w);
     testValidateDocument("invalid/link-missing/");
   }
@@ -782,7 +799,7 @@ public class Epub30CheckExpandedTest extends AbstractEpubCheckTest
   {
     testValidateDocument("valid/edu-basic/", EPUBProfile.EDUPUB);
   }
-  
+
   @Test
   public void testEdupub_FXL()
   {
@@ -950,11 +967,11 @@ public class Epub30CheckExpandedTest extends AbstractEpubCheckTest
         MessageId.RSC_005, MessageId.RSC_005, MessageId.RSC_005, MessageId.RSC_005);
     testValidateDocument("invalid/data-nav-regionbased-struct");
   }
-  
+
   @Test
   public void testDataNav_RegionBased_ComicsTypes()
   {
-      testValidateDocument("valid/data-nav-regionbased-comics");
+    testValidateDocument("valid/data-nav-regionbased-comics");
   }
 
   @Test
@@ -1045,17 +1062,17 @@ public class Epub30CheckExpandedTest extends AbstractEpubCheckTest
   }
 
   @Test
-  public void testEncryption_Unknown(){
+  public void testEncryption_Unknown()
+  {
     expectedErrors.add(MessageId.RSC_004);
     testValidateDocument("invalid/encryption-unknown");
   }
-  
+
   @Test
   public void testOutOfSpineRef()
   {
     expectedErrors.add(MessageId.RSC_011);
     testValidateDocument("invalid/href-outofspine");
   }
-  
 
 }
