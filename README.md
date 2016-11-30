@@ -1,4 +1,4 @@
-EpubCheck [![Release](https://img.shields.io/github/release/idpf/epubcheck.svg)](https://github.com/idpf/epubcheck/releases/latest)
+EpubCheck [![Release](https://img.shields.io/github/release/daisy/epubcheck.svg)](https://github.com/daisy/epubcheck/releases/latest)
 =========
 
 EpubCheck is a tool to validate EPUB files. It can detect many
@@ -6,6 +6,17 @@ types of errors in EPUB. OCF container structure, OPF and OPS mark-up,
 and internal reference consistency are checked. EpubCheck can be run
 as a standalone command-line tool or used as a Java library.
 
+## About this fork
+
+**This is a fork from the DAISY Consortium**, to experiment with the creation of an accessibility report from EpubCheck.
+
+This fork adds an `--a11y` option to EpubCheck's CLI, which receives a file path argument. When the `--a11y` option is enabled, EpubCheck will produce a report (in HTML) to assist with accessibility auditing.
+
+Currently, the accessbility report features :
+
+- the outline computed from the HTML headings of the content documents
+- a copy of the Navigation Document `toc`, for comparison with the previous outline
+- a list of all the images (from the Content Documents `img` HTML elements) associated with their descriptions (alt text).
 
 ## Downloads
 
